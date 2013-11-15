@@ -17,6 +17,9 @@ for (var j = 1; j <= testMax; j++) {
                 throw err;
             $ = cheerio.load(body);	
 			var playerName = '';			
+			$('title').each(function() {
+				console.log($(this).text());
+			});
 			$('tr.pncPlayerRow').each(function() {	
 				$('tr.pncPlayerRow a[tab$="null"]', this).each(function() {
 					playerName = $(this).text();
