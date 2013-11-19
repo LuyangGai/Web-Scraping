@@ -1,0 +1,21 @@
+Functionality for weekly projections
+
+- Use SOS, Schedule, and Average stats to determine projections for weekly matchups.
+
+Order of operations
+- Calculate average stats
+- Grab teams of players from stat page
+- Grab schedule / matchups / sos (scale of 1-10) based on team
+	- SOS
+		- each matchup point will have a 5% affect on a player's average stat. Example: 1 -- 77.5%, 3 -- 87.5%, 5, 97.5%, 7 -- 107.5%, 9 -- 117.5%, 10 -- 122.5%
+		- INJURIES*
+		- players without projections from this year*
+	- grab schedule, store matchups in hash table
+- add and multiply etc. with averages
+
+Functions Needed
+- getSOS (takes 1 team)
+	- cycle through team, grab players, put into new hash
+	- Look at schedule and put all matchups for each team into hash
+	- cycle through players in new hash and check schdule for matchups and put into hash
+	- cycle through player schedule hash and add up weekly stats based on average stats 

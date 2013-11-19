@@ -1,11 +1,13 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
-stats = ['FG', 'FG%', 'FT', 'FT%', '3PM', 'REB', 'AST', 'STL', 'BLK', 'TO', 'PTS']
-statsCounter = 0
-testMax = 12;
-teams = {}
-calculateTotalRuns = 0;
+var stats = ['FG', 'FG%', 'FT', 'FT%', '3PM', 'REB', 'AST', 'STL', 'BLK', 'TO', 'PTS'];
+var statsCounter = 0;
+var testMax = 12;
+var teams = {};
+var calculateTotalRuns = 0;
+var schedule = {};
+var projections = {};
 
 runServer = function() {
 	
@@ -20,22 +22,31 @@ runServer = function() {
 	        callback(data);
     	});
 	}
+    
+    function cbackFunc(tNum) {
+        getAllSOS(parseFloat(tNum), getTeamSOS);    
+    }
 
 	function handleOpen(response) {
     	if (response == "1") {
-			calculateAllStats();
-        	//process.exit();
+			calculateAllStats(process.exit);
     	}
 		else if (response == "2") {
-			askQuestion("What team would you like to see?\n", calculateStats);
+			askQuestion("Team Number?\n", calculateStats);
 			//calculate one team's average stats
 		}
 		else if (response == "3") {
 			//show all team's players
+			showAllTeamStats();			
 		}
 		else if (response == '4') {
 			//show one team's players
+			askQuestion("Team number?\n", showTeamStats);	
 		} 
+        else if (response == '5') {
+            calculateAllStats();
+            askQuestion('Team number?', cbackFunc);
+        }
     	else {
         	console.log('goodbye');
         	process.exit();
@@ -56,7 +67,7 @@ runServer = function() {
 	}
 
 
-	var calculateAllStats = function() {
+	var calculateAllStats = function(callback) {
 		//console.log('calculateStats called!');
 		var callbackCounter = 0;
 		for (var j = 1; j <= testMax; j++) {
@@ -65,9 +76,25 @@ runServer = function() {
 				callbackCounter++;
 				calculateTotals(x);
 				if (callbackCounter == 12) {
-					printAverages();			
-					process.exit();
+					//printAverages();
+                    if (callback)
+					   callback();
 				}
+			});
+		}
+	}
+
+	var showTeamStats = function(x) {
+		getTeamData(x, function(x) {
+			console.log(teams[x]);
+			process.exit();
+		});
+	}
+
+	var showAllTeamStats = function() {
+		for (var j = 1; j <= testMax; j++) {
+			getTeamData(j, function(x) {
+				console.log(teams[j]);
 			});
 		}
 	}
@@ -83,16 +110,23 @@ runServer = function() {
                     throw err;
                 $ = cheerio.load(body);
                 var playerName = '';
+				//var playerString = '';
                 $('title').each(function() {
                     //console.log($(this).text());
                 	teams[j]['Name'] = $(this).text();
 				});
                 $('tr.pncPlayerRow').each(function() {
-                    $('tr.pncPlayerRow a[tab$="null"]', this).each(function() {
+                   	$('tr.pncPlayerRow a[tab$="null"]', this).each(function() {
 						playerName = $(this).text();
-                        teams[j][playerName] = {};
-						//playerName = $(this).text();
-                    });    
+                        teams[j][playerName] = {};	
+                    });
+   
+					$('td.playertablePlayerName', this).each(function() {
+						var playerString = $(this).text();
+						var playerArray = (playerString.split(' '))[3];		
+						teams[j][playerName]['Team'] = playerArray.substring(0, 3);	
+					});
+ 
                     $('tr.pncPlayerRow[id*="plyr"] td.playertableStat ', this).each(function() {
                         var currentStat = stats[statsCounter%11];
                         teams[j][playerName][currentStat] = $(this).text();
@@ -105,7 +139,6 @@ runServer = function() {
 	}
 
 	var calculateTotals = function(x) {
-		//console.log('CalculateTotals called!');
 		var playerCount = 0;
 		var currentTeam = teams[x];
 		calculateTotalRuns++;
@@ -136,14 +169,16 @@ runServer = function() {
 				currentTeam['Averages']['FGM'] += parseFloat(FGS[0]);
 				currentTeam['Averages']['FGA'] += parseFloat(FGS[1]);
 				currentTeam['Averages']['FTM'] += parseFloat(FTS[0]);
-				currentTeam['Averages']['FTA'] += parseFloat(FTS[1]);	
-				currentTeam['Averages']['3PM'] += parseFloat(currentPlayer[stats[4]]);
-				currentTeam['Averages']['REB'] += parseFloat(currentPlayer[stats[5]]);
-				currentTeam['Averages']['AST'] += parseFloat(currentPlayer[stats[6]]);
-				currentTeam['Averages']['STL'] += parseFloat(currentPlayer[stats[7]]);
-				currentTeam['Averages']['BLK'] += parseFloat(currentPlayer[stats[8]]);
-				currentTeam['Averages']['TO'] += parseFloat(currentPlayer[stats[9]]);
-				currentTeam['Averages']['PTS'] += parseFloat(currentPlayer[stats[10]]);
+				currentTeam['Averages']['FTA'] += parseFloat(FTS[1]);
+                
+                var statLoopCounter = 0;
+                    //loop through stats for each player
+                for (var stat in currentPlayer) {
+                    if (statLoopCounter > 4) {
+                        currentTeam['Averages'][stat] += parseFloat(currentPlayer[stat]);    
+                    }
+                    statLoopCounter++;
+                } 
 			}
 		}
 		for (var stat in currentTeam['Averages']) {
@@ -153,10 +188,6 @@ runServer = function() {
 		currentTeam['Averages']['FG%'] = currentTeam['Averages']['FGM'] / currentTeam['Averages']['FGA'];
 		currentTeam['Averages']['FT%'] = currentTeam['Averages']['FTM'] / currentTeam['Averages']['FTA'];	
 		currentTeam['Averages']['Count'] = playerCount; 
-
-		//if (calculateTotalRuns == testMax) {
-			//printAverages();
-		//}	
 	}
 	
 	var printAverages = function() {
@@ -164,6 +195,96 @@ runServer = function() {
 			console.log(team);
 			console.log(teams[team]['Averages']);	
 		}
+	}
+
+    var getAllSOS = function(teamNum, callback) {
+        var url = 'http://espn.go.com/fantasy/basketball/story/_/id/9981540/fantasy-basketball-forecaster-nov-18-24-lineup-advice-quality-matchups';			
+        request(url, ( function(teamNum, callback) {
+            return function(err, resp, body) { 
+                if (err)
+                    throw err;
+                $ = cheerio.load(body);
+                $('tbody').first().each(function() {
+                    var isClippers = true;
+                    $('tr.last', this).each(function() {
+                        var oNum = 0;
+                        var teamName;
+                        $('td > b', this).each(function() {
+                            if (oNum == 0) {
+                                teamName = $(this).text().substring(0, 3);
+                                switch(teamName) {
+                                    case 'Bro': teamName = 'BKN'; break;
+                                    case 'Gol': teamName = 'GS'; break;
+                                    case 'Los': 
+                                        if (isClippers) {
+                                            teamName = 'LAC';
+                                            isClippers = false;
+                                        }
+                                        else {
+                                            teamName = 'LAL';
+                                        }
+                                        break;
+                                    case 'New': teamName = 'NY'; break;
+                                    case 'Okl': teamName = 'OKC'; break;
+                                    case 'San': teamName = 'SA'; break;
+                                }
+                                schedule[teamName] = {};
+                                oNum++;
+                            }
+                            else {
+                                if (this.text() != 'R:') {
+                                    var game = this.parent().text();
+                                    var mArr = game.split('\n');
+                                    var mNum = mArr[1].substring(3);
+                                    schedule[teamName][oNum] = parseFloat(mNum); 
+                                }
+                                oNum++;
+                            } 
+                        });
+                    });
+                    callback(teamNum);
+                });
+            }
+        })(teamNum, callback));    
+    }
+
+	var getTeamSOS = function(x) {
+		var currentTeam = teams[x];
+        projections[x] = {
+			'3PM': 0.0,
+			'REB': 0.0,
+			'AST': 0.0,
+			'STL': 0.0,
+			'BLK': 0.0,
+			'TO': 0.0,
+			'PTS': 0.0
+		}
+        
+        //loop through players on team x
+		for (var player in currentTeam) {
+            var currentPlayer = currentTeam[player];
+			if (currentPlayer[stats[0]] && currentPlayer[stats[4]] != '--') {
+                var team = currentPlayer['Team'].trim();
+                var playerSchedule = schedule[team];
+                
+                //loop through matchups in schedule
+                for (var matchup in playerSchedule) {
+                    var mRating = playerSchedule[matchup];
+                    var scale = mRating * .05 + .725;
+                    
+                    var statLoopCounter = 0;
+                    //loop through stats for each player
+                    for (var stat in currentPlayer) {
+                        if (statLoopCounter > 4) {
+                            projections[x][stat] += parseFloat(currentPlayer[stat]) * scale;    
+                        }
+                        statLoopCounter++;
+                    }       
+                }
+			}
+		}
+        console.log(projections);
+        process.exit();
 	}
 }
 
