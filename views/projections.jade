@@ -1,0 +1,46 @@
+extends layout
+block demos
+    .container-fluid
+        //	Subnav
+        header#overview.jumbotron.subhead
+            h1
+            .subnav
+                .row-fluid
+                    .span8(align='left')
+                        .btn-toolbar
+                            a.btn.btn-success(href='upload')
+                                i.icon-upload.icon-white
+                                |  Upload Guide
+        .row-fluid
+            .span12
+                div(align='center')
+                    table#myTable.table.table-striped.table-bordered.table
+                        thead
+                            tr
+                                th#tname.proj
+                                    a(href='#') Team Name
+                                        i
+                                th#3pm.proj
+                                    a(href='#') 3PM
+                                        i
+                                th#reb.proj
+                                    a(href='#') REB
+                                        i
+                                th#ast.proj
+                                    a(href='#') AST
+                                        i
+                                th#stl.proj
+                                    a(href='#') STL
+                                        i
+                                th#blk.proj
+                                    a(href='#') BLK
+                                        i
+                                th#to.proj
+                                    a(href='#') TO
+                                        i
+                                th#pts.proj
+                                    a(href='#') PTS
+                                        i
+                        tbody
+                            block script
+                .error-text

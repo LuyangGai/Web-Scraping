@@ -1,0 +1,24 @@
+The character encoding of the plain text document was not declared. The document will render with garbled text in some browser configurations if the document contains characters from outside the US-ASCII range. The character encoding of the file needs to be declared in the transfer protocol or file needs to use a byte order mark as an encoding signature.
+
+
+
+											input#id(type='hidden', value='')
+                                            input#owner(type='hidden', value='')
+                                            input#uploadDate(type='hidden', value='')
+                                            input#status(type='hidden', value='')
+                                            input#published(type='hidden', value='')
+                                            input#site(type='hidden', value='')
+                                            input#urlKey(type='hidden', value='')
+                                            input#title(type='hidden', value='')
+
+
+
+    script(type='text/javascript')
+        document.getElementById('id').value="!{demoByID.id}";
+        document.getElementById('title').value="!{demoByID.title}";
+        document.getElementById('owner').value="!{demoByID.owner}";
+        document.getElementById('uploadDate').value="!{demoByID.uploadDate}";
+        document.getElementById('status').value="!{demoByID.status}";
+        document.getElementById('published').value="!{demoByID.published}";
+        document.getElementById('site').value="!{demoByID.site}";
+        document.getElementById('urlKey').value="!{demoByID.urlKey}";

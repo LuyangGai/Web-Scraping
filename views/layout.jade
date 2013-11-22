@@ -1,0 +1,75 @@
+!!! 5
+html(lang='en')
+    head
+        // Title and configs
+        meta(charset='utf-8')
+        title Fantasy Basketball
+        meta(name="viewport",content="width=device-width, initial-scale=1.0")
+        meta(name="description",content="")
+        meta(name="author",content="")
+
+        // Styles
+        link(href='/css/bootstrap.css', rel='stylesheet')
+        link(href='/css/bootstrap-responsive.css', rel='stylesheet')
+        link(href='/css/docs.css', rel='stylesheet')
+        link(href='/js/google-code-prettify/prettify.css', rel='stylesheet')
+        link(href='/css/style.css', rel='stylesheet')
+        link(href='/css/mystyles.css', rel='stylesheet')
+
+        link(rel='shortcut icon', href='assets/images/favicon.ico')
+        link(rel='apple-touch-icon-precomposed', sizes='144x144', href='/assets/images/apple-touch-icon-144-precomposed.png')
+        link(rel='apple-touch-icon-precomposed', sizes='114x114', href='/assets/images/apple-touch-icon-114-precomposed.png')
+        link(rel='apple-touch-icon-precomposed', sizes='72x72', href='/assets/images/apple-touch-icon-72-precomposed.png')
+        link(rel='apple-touch-icon-precomposed', href='/assets/images/apple-touch-icon-57-precomposed.png')
+
+        block head
+    body
+        .pull-right
+            p#notify
+        // Top nav bar
+        .navbar.navbar-fixed-top
+            .navbar-inner
+                .container-fluid
+                    a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+
+                    a.brand Fantasy Basketball
+
+                    .nav-collapse.collapse
+                        ul.nav
+                            li
+                                a(href='/teams/1') Teams
+                            li
+                                a(href='/projections') Projections
+
+        script(src='/js/jquery.js')
+        script(src='/js/jquery.form.js')
+        script(src='/js/moment.js')
+        //- script(src='/js/helpscript.js')
+        script(src='/js/uuid.js')
+        script(src='/js/jquery.spin.js')
+        script(src='/js/spin.js')
+        script(src='/js/myscripts.js')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
+        script(src='/js/widgets.js')
+        script(src='/js/google-code-prettify/prettify.js')
+        script(src='/js/bootstrap-transition.js')
+        script(src='/js/bootstrap-alert.js')
+        script(src='/js/bootstrap-modal.js')
+        script(src='/js/bootstrap-dropdown.js')
+        script(src='/js/bootstrap-scrollspy.js')
+        script(src='/js/bootstrap-tab.js')
+        script(src='/js/bootstrap-tooltip.js')
+        script(src='/js/bootstrap-popover.js')
+        script(src='/js/bootstrap-button.js')
+        script(src='/js/bootstrap-collapse.js')
+        script(src='/js/bootstrap-carousel.js')
+        script(src='/js/bootstrap-typeahead.js')
+        script(src='/js/application.js')
+
+        block demos
+        block upload
+        block settings
+        block monitoring

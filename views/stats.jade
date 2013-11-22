@@ -1,0 +1,62 @@
+extends layout
+block demos
+    .container-fluid
+        //	Subnav
+        header#overview.jumbotron.subhead
+            h1
+            .subnav
+                .row-fluid
+                    .span8
+                    .span4
+                        .btn-toolbar.pull-right
+                            .btn-group
+                                a.btn.btn-info.dropdown-toggle(data-toggle='dropdown')
+                                    block demoTypes
+                                    &nbsp;
+                                    span.caret
+                                ul.dropdown-menu
+        .row-fluid
+            .span12
+                div(align='center')
+                    table#myTable.table.table-striped.table-bordered.table
+                        thead
+                            tr
+                                th#name.stat
+                                    a(href='#') Name
+                                        i
+                                th#fgm.stat
+                                    a(href='#') FGM/FGA
+                                        i.icon-chevron-up
+                                th#fg.stat
+                                    a(href='#') FG%
+                                        i
+                                th#ftm.stat
+                                    a(href='#') FTM/FTA
+                                        i
+                                th#ft.stat
+                                    a(href='#') FT%
+                                        i
+                                th#3pm.stat
+                                    a(href='#') 3PM
+                                        i
+                                th#reb.stat
+                                    a(href='#') REB
+                                        i
+                                th#ast.stat
+                                    a(href='#') AST
+                                        i
+                                th#stl.stat
+                                    a(href='#') STL
+                                        i
+                                th#blk.stat
+                                    a(href='#') BLK
+                                        i
+                                th#to.stat
+                                    a(href='#') TO
+                                        i
+                                th#pts.stat
+                                    a(href='#') PTS
+                                        i
+                        tbody
+                            block script
+                .error-text

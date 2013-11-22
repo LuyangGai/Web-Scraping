@@ -19,3 +19,12 @@ Functions Needed
 	- Look at schedule and put all matchups for each team into hash
 	- cycle through players in new hash and check schdule for matchups and put into hash
 	- cycle through player schedule hash and add up weekly stats based on average stats 
+    
+    
+FRONT-END UI
+
+-functions
+    -show player stats by team (different team endpoints give u the team) 1st priority
+    -show projections per matchup and for all teams (sortable by stat)
+    -show latest news per player (grab data from rotoworld)
+    

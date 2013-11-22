@@ -1,0 +1,41 @@
+#expText {
+    width: 80px;
+    height: 16px;
+}
+
+#titleBox, #saveTitleBox {
+    margin-bottom: 18px;
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 27px;
+}
+
+.demoIFrame {
+    width: 100%;
+}
+
+.span12 {
+    height: 100%;
+}
+
+.table tbody tr:hover td {
+    background-color: #E4E4E4;
+}
+
+a {
+    color: #1122CC;
+}
+
+.form-horizontal select {
+    margin-bottom: 5px;
+}
+
+.divider {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
+
+.spinner {
+    right: 20px;
+}
