@@ -63,6 +63,7 @@ runServer = function() {
     
     //GET - ALL STATS - DATA
     app.get('/getProjections', function(req, res) { 
+        //getRotoworldNews('Kemba','Walker');
         getAllStats(function() {
             calculateAllAverages();
             getESPNSchedule(function() {
@@ -71,6 +72,34 @@ runServer = function() {
             });  
         });
     });
+    
+    app.get('/players/:id', function(req, res) {
+        res.render('settings.jade');    
+    });
+    
+    app.get('/getPlayers/:id', function(req, res) {
+        
+    });
+    
+    var getPlayerInfo = function(id) {
+        
+    }
+    
+    var getRotoworldNews = function(fName, lName) {
+        var url = 'http://www.rotoworld.com/content/playersearch.aspx?searchname=' + lName + ',' + fName + '&sport=nba';
+        request(url, function(err, resp, body) { 
+            if (err)
+                throw err;
+            $ = cheerio.load(body);
+            $('.playernews > .report').each(function() {
+                console.log(this.text());
+            });
+            $('.playernews > .impact').each(function() {
+                console.log(this.text());
+            });
+        });
+        
+    }
 
 	var getAllStats = function(callback) {
 		var callbackCounter = 0;
@@ -184,7 +213,8 @@ runServer = function() {
 	}
 
     var getESPNSchedule = function(callback) {
-        var url = 'http://espn.go.com/fantasy/basketball/story/_/id/9981540/fantasy-basketball-forecaster-nov-18-24-lineup-advice-quality-matchups';
+        //var url = 'http://espn.go.com/fantasy/basketball/story/_/id/9981540/fantasy-basketball-forecaster-nov-18-24-lineup-advice-quality-matchups';
+        var url = 'http://espn.go.com/fantasy/basketball/story/_/id/10018987/fantasy-basketball-forecaster-nov-25-dec-1-lineup-advice-quality-matchups';
         request(url, function(err, resp, body) { 
             if (err)
                 throw err;

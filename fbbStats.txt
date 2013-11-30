@@ -28,3 +28,11 @@ FRONT-END UI
     -show projections per matchup and for all teams (sortable by stat)
     -show latest news per player (grab data from rotoworld)
     
+-Player page
+    -picture
+    -season averages
+    -last 15?
+    -Position player rater Rank
+    -player rater rank
+    -mckitish rank?
+    -

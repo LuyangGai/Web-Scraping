@@ -1,0 +1,34 @@
+extends layout
+block settings
+    script(src='/js/myscripts.js')
+    .container-fluid
+        header#overview.jumbotron.subhead
+            h1 Guide Settings
+        #titleInformation
+            p#titleBox
+                | !{demoByID.title} (
+                a#editTitle(href='#') Edit
+                | )
+        input#title(type='hidden', value='#{demoByID.title}')
+        .row-fluid
+            .span12
+                .row-fluid
+                    .span6
+                        ul.thumbnails
+                            li.span12
+                                a.thumbnail(href='#')
+                                    script(type='text/javascript')
+                                        if('!{demoByID.site}' && '!{demoByID.urlKey}')
+                                            document.write("<iframe src='http://#{demoByID.site}/embed/#{demoByID.urlKey}' class='demoIFrame'></iframe>");
+                                        else
+                                            document.write("<img src='http://placehold.it/800x600', alt=''>");
+                                br/
+                                div(align='center')
+                                    btn.btn(type='submit') View Demo
+                                    btn.btn(type='submit') Copy Link
+                                    btn.btn(type='submit') Copy Embed Code
+                    input#expirationDateValue(type='hidden', value='None')
+                    input#id(type='hidden', value='#{demoByID.id}')
+                    input#status(type='hidden', value='#{demoByID.status}')
+                    input#urlKey(type='hidden', value='#{demoByID.urlKey}')
+                    input#iFrameWidth(type='hidden', value='')

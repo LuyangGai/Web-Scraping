@@ -1,11 +1,4 @@
-var ADMIN = {};
-var lastDemoRequest;
-var demoCount = 0;
 var reverser = 1;
-var uploadState = 0;
-var savedDemos = new Array();
-var testDemos = {};
-var uploadId;
 var currentTeam;
 var teams = {};
 var projections = {};
@@ -13,6 +6,7 @@ var field;
 var counter = 0;
 var savedProjections = new Array();
 var savedStats = new Array();
+var nameHash = {};
 
 $(function () {
     $('.proj').click(function() {
@@ -43,7 +37,7 @@ var completeStatTable = function(stats) {
 
 var completeProjTable = function(projections) {
     for(var i = 0; i < projections.length; i++)
-        insertProjection(projections[i]);
+        insertProjection(projections[i], i);
 };
 
 var statSort = function(selector) {
@@ -115,42 +109,54 @@ var load = function(url, id) {
 };
 
 var loadStatsCB = function(data, id) {
+    console.log('loadStatsCB called');
     teams = data;
-    fillTNameLink();
+    fillTeamQuickLink();
     fillStatTable(id);
     fillHeader(id);
 }
 
 var loadProjsCB = function(data) {
+    console.log('loadProjsCB called');
     projections = data;
     fillProjectionsTable();
 }
 
 var fillProjectionsTable = function() {
+    var projCounter = 1;
     console.log('fill table called!');
-    for (var team in projections) {
-        insertNewProjection(projections[team]);
+    console.log(projections);
+    console.log('projections');
+    for(var team in projections) {
+        insertNewProjection(projections[team], projCounter);
+        projCounter++;
     }
 }  
 
-var insertProjection = function(teamProjection) {
+
+var insertProjection = function(teamProjection, index) {
     var tr = $('<tr class="projections"/>');
+    console.log(teamProjection);
+    console.log(index);
     for (var stat in teamProjection) {
-        if (stat == 'Name')
-            getTdHtml(teamProjection[stat]).appendTo(tr);    
+        if (stat == 'Name') {
+            //$('<td/>').html(
+            var link = $('<td/>').html(getAHtml(teamProjection[stat], '/teams/' + index));
+            link.appendTo(tr);
+        }
         else
             getTdHtml(teamProjection[stat].toFixed(2)).appendTo(tr);
     }
     tr.appendTo('#myTable');    
 }
 
-var insertNewProjection = function(teamProjection) {
+var insertNewProjection = function(teamProjection, index) {
     savedProjections[counter] = teamProjection;
     counter++;
-    insertProjection(teamProjection);
+    insertProjection(teamProjection, index);
 }
 
-var fillTNameLink = function() {
+var fillTeamQuickLink = function() {
     var firstTeam = true;
     var teamCounter = 1;
     for (var team in teams) {
@@ -200,13 +206,13 @@ var getTdHtml = function(value) {
     return $('<td/>').text(value);
 };
 
+var getTdTeamLinkHtml = function() {
+    
+};
+
 var getLiHtml = function() {
     return $('<li/>');    
 }
 var getAHtml = function(value, id) {
     return $('<a href = "' + id + '">' + value + '</a>');
 };
-    
-	
-
-	
